@@ -1,0 +1,1 @@
+Una caracteristica en  la segunda rama de la estrategia

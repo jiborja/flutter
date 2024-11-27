@@ -1,0 +1,1 @@
+Archivo temporal que se usara bajo la carateristica1

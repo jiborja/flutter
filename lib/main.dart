@@ -1,56 +1,92 @@
-import 'dart:ui';
-
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:presentation/dependencyInjection/dependency_injection.dart';
-//import 'package:presentation/firebase_options.dart';
-import 'package:presentation/screens/login/login_screen.dart';
-import 'package:presentation/shared/auth/auth_global_wrapper.dart';
-import 'package:presentation/shared/routes.dart';
-import 'package:presentation/shared/theme.dart';
+import 'package:pocmirror/Pages/favoritesPage.dart';
+import 'package:pocmirror/Pages/generatorPage.dart';
+import 'package:pocmirror/common/myAppState.dart';
+import 'package:provider/provider.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    //options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  /// Firebase Crashlytics
-  /// Pass all uncaught "fatal" errors from the framework to Crashlytics
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
-  /// Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
-
-  configureInjection();
+void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AuthGlobalWrapper.build(
-      navigatorKey: _navigatorKey,
-      context: context,
+    return ChangeNotifierProvider(
+      create: (context) => MyAppState(),
       child: MaterialApp(
-        navigatorKey: _navigatorKey,
-        title: 'movies',
-        theme: ligthTheme,
-        initialRoute: LoginScreen.routeName,
-        routes: AppRouter.routes,
-        onGenerateRoute: AppRouter.onGenerateRoute,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
+        title: 'Namer App',
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+        ),
+        home: MyHomePage(),
       ),
     );
   }
 }
+
+class MyHomePage extends StatefulWidget {
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  var selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget page;
+    switch (selectedIndex) {
+      case 0:
+        page = GeneratorPage();
+        break;
+      case 1:
+        page = FavoritesPage();
+        break;
+      default:
+        throw UnimplementedError('no widget for $selectedIndex');
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Scaffold(
+          body: Row(
+            children: [
+              SafeArea(
+                child: NavigationRail(
+                  extended: constraints.maxWidth >= 600,
+                  destinations: [
+                    NavigationRailDestination(
+                      icon: Icon(Icons.home),
+                      label: Text('Home'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.favorite),
+                      label: Text('Favorites'),
+                    ),
+                  ],
+                  selectedIndex: selectedIndex,
+                  onDestinationSelected: (value) {
+                    setState(() {
+                      selectedIndex = value;
+                    });
+                  },
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  child: page,
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    );
+  }
+}
+

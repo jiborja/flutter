@@ -1,0 +1,7 @@
+trigger:
+  - qa
+
+steps:
+    - script: |
+        echo "desplieuge realizado"
+    

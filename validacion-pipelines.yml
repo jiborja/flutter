@@ -1,0 +1,63 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- checkout: self
+  fetchDepth: 2
+
+- task: FlutterInstall@0
+  displayName: "Install Flutter SDK"
+  inputs:
+    mode: 'auto'
+    channel: 'stable'
+    version: 'latest'
+
+# - task: DartToolKit-FieldTrail@0
+#   displayName: "Flutter Format (Dart)"
+#   inputs:
+#     sdkVersion: '3.2.0'
+#     preserveSDK: true
+#     buildSpec: 'dart format .'
+
+- script: |
+    git diff HEAD^1 HEAD --name-status | grep 'lib[a-zA-Z0-9_\/]*.dart' | sed -e 's/\.dart/_test\.dart/g' -e 's/lib/test/g' > testClass.txt
+    echo --------------------------------------
+    cat testClass.txt
+    testDelta="false"
+    echo --------------------------------------
+    TEST_FILES=""
+    while IFS= read -r line
+    do
+      if [ -f "$line" ]; then
+        TEST_FILES="$TEST_FILES $line"
+        testDelta="true"
+      fi
+    done < testClass.txt
+
+    echo "$TEST_FILES"
+    echo "##vso[task.setvariable variable=TEST_DELTA]"$testDelta
+    echo --------------------------------------
+    flutter test --pub --coverage $TEST_FILES
+  name: "testDelta"
+  displayName: a ver que pasa
+
+- ${{ if eq(variables['testDelta.TEST_DELTA'],'true') }}:
+  - script: |
+      echo "Test delta"
+- ${{ else }}:
+  - script: |
+      echo "Test $(TEST_DELTA)"
+
+
+# - task: FlutterTest@0
+#   displayName: "Run unit tests"
+#   inputs:
+#     generateCodeCoverageReport: true
+#     projectDirectory: '$(Build.SourcesDirectory)'
+#     extraArgs: "../test/main_test.dart ../test/widget_test.dart"
