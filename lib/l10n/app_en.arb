@@ -1,0 +1,20 @@
+{
+  "movie_detail_screen_original_language": "Original Language",
+  "movie_detail_screen_release_date": "Release Date",
+  "login_screen_movies": "Movies",
+  "login_screen_email": "Email",
+  "login_screen_email_error_empty_input": "Please enter your email",
+  "login_screen_password": "Password",
+  "login_screen_password_error_empty_input": "Please enter your password",
+  "login_screen_log_in": "Log In",
+  "login_screen_or": "Or",
+  "register_screen_username": "Username",
+  "register_screen_signup": "Sign up!",
+  "shared_email": "Email",
+  "shared_password": "Password",
+  "shared_sign_up": "Sign Up",
+  "shared_error_empty_input": "Please enter some text",
+  "user_detail_age_label": "Age",
+  "user_detail_submit_button_label": "Submit",
+  "user_detail_form_title": "How old are you ?"
+}
