@@ -20,7 +20,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: 3.19.0
+          flutter-version: latest
 
       - name: Cache SonarQube Cloud packages
         uses: actions/cache@v4
