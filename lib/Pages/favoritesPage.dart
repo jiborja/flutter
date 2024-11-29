@@ -18,7 +18,7 @@ class FavoritesPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(20),
           child: Text('You haves '
-              '${appState.favorites.length} Favorites:'),
+              '${appState.favorites.length} Favorites test:'),
         ),
         for (var pair in appState.favorites)
           ListTile(
