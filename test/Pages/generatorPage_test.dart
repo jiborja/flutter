@@ -16,7 +16,7 @@ void main() {
     await tester.pumpWidget(const MyApp());
 
     // Verify that our counter starts at 0.
-    expect(find.text('Like 2'), findsOneWidget);
+    expect(find.text('Like'), findsOneWidget);
 
     // // Tap the '+' icon and trigger a frame.
     // await tester.tap(find.byIcon(Icons.add));
