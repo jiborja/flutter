@@ -19,7 +19,7 @@ void main() {
     await tester.tap(find.byIcon(Icons.favorite));
     await tester.pump();
     
-    expect(find.text('No favorites yet.'), findsOneWidget);
+    expect(find.text('No favorites yet 2.'), findsOneWidget);
 
     // // Tap the '+' icon and trigger a frame.
     // await tester.tap(find.byIcon(Icons.add));
