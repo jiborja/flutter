@@ -36,7 +36,7 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
       
       - run: flutter pub get
-      - run: flutter test pub --coverage ./test/Pages/favoritesPage_test.dart
+      - run: flutter pub test --coverage ./test/Pages/favoritesPage_test.dart
       - run: cat ./coverage/lcov.info
       #- run: flutter build web
       
