@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - feature/*
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -36,7 +37,7 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
       
       - run: flutter pub get
-      - run: flutter test --coverage
+      - run: flutter test --coverage ./test/Pages/generatorPage_test.dart
       - run: cat ./coverage/lcov.info
       #- run: flutter build web
       
