@@ -36,8 +36,8 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
       
       - run: flutter pub get
-      - run: flutter test
-      - run: flutter build web
+      - run: flutter test --coverage
+      #- run: flutter build web
       
       - name: Download sonar-scanner
         run: |
